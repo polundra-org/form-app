@@ -15,7 +15,7 @@ function csvRead()
         $line = fgetcsv($fp, 100, ',');
         var_dump($line);
 
-        $item = array_combine($headers, $line); // на послденей иттерации, функиця fgetscvs возвращает false и array_combine дает ошибку, поскольку ждет два массива.
+        $item = array_combine($headers, $line); // на последней итерации, функиця fgetscvs возвращает false и array_combine выдает ошибку, поскольку ждет на вход два массива.
         echo '<pre>';
         print_r($item);
         echo '</pre>';
@@ -39,7 +39,7 @@ function csvEmailExixst()
 csvWrite();
 //csvRead();
 
-//  fseek($fp, 0, SEEK_END);
+//fseek($fp, 0, SEEK_END);
 
 header("Location: result.php?first_name=$first_name&last_name=$last_name&email=$email");
 
