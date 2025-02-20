@@ -18,10 +18,10 @@
 // print_r($str);
 // echo '</pre>';
 
-echo '<pre>';
-print_r($_GET);
-echo '</pre>';
-
 $fullName = $_GET['first_name'] . ' ' . $_GET['last_name'];
 
-echo "$fullName, Ваши данные сохранены. Запрос на подтверждение отправлен на почту: $_GET[email]";
+if ($_GET['message']) {
+    echo "$fullName, Вы уже зарегестрированы. Ваша почта: $_GET[email]";
+} else {
+    echo "$fullName, Ваши данные сохранены. Запрос на подтверждение отправлен на почту: $_GET[email]";
+}
