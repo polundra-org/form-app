@@ -1,0 +1,12 @@
+modules = ["php-8.2", "web"]
+run = "php -S 0.0.0.0:8000 -t ."
+
+[nix]
+channel = "stable-24_05"
+
+[deployment]
+run = ["sh", "-c", "php -S 0.0.0.0:8000 -t ."]
+
+[[ports]]
+localPort = 8000
+externalPort = 80
