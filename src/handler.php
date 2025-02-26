@@ -2,9 +2,16 @@
 
 define('CSV_PATH', '../data/requests.csv');
 
-$first_name = $_POST['first_name'];
-$last_name = $_POST['last_name'];
-$email = $_POST['email'];
+if ($_POST['first_name'] && $_POST['last_name'] && $_POST['email']) {
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $email = $_POST['email'];
+} else {
+    $first_name = 'Andrey';
+    $last_name = 'Gubin';
+    $email = 'girls_like_stars@gmail.com';
+} 
+
 $request = [$first_name, $last_name, $email];
 
 function csvRead()
