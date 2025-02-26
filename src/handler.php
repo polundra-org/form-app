@@ -1,15 +1,19 @@
 <?php
 
 define('CSV_PATH', '../data/requests.csv');
+define('DEFAULT_FNAME', 'Andrey');
+define('DEFAULT_LNAME', 'Gubin');
+define('DEFAULT_EMAIL', 'girls_like_stars@gmail.com');
 
-if ($_POST['first_name'] && $_POST['last_name'] && $_POST['email']) {
+
+if (empty($_POST['first_name']) && empty($_POST['last_name']) && empty($_POST['email'])) {
+    $first_name = DEFAULT_FNAME;
+    $last_name = DEFAULT_LNAME;
+    $email = DEFAULT_EMAIL;
+} else {
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
     $email = $_POST['email'];
-} else {
-    $first_name = 'Andrey';
-    $last_name = 'Gubin';
-    $email = 'girls_like_stars@gmail.com';
 } 
 
 $request = [$first_name, $last_name, $email];
