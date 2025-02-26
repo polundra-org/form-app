@@ -1,10 +1,22 @@
 <?php
 
-define('CSV_PATH', '../data/names.csv');
+define('CSV_PATH', '../data/requests.csv');
+define('DEFAULT_FNAME', 'Andrey');
+define('DEFAULT_LNAME', 'Gubin');
+define('DEFAULT_EMAIL', 'girls_like_stars@gmail.com');
 
-$first_name = $_POST['first_name'];
-$last_name = $_POST['last_name'];
-$email = $_POST['email'];
+
+if (empty($_POST['first_name']) || empty($_POST['last_name']) || empty($_POST['email'])) {
+    $first_name = DEFAULT_FNAME;
+    $last_name = DEFAULT_LNAME;
+    $email = DEFAULT_EMAIL;
+} else {
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $email = $_POST['email'];
+} 
+
+$request = [$first_name, $last_name, $email];
 
 function csvRead()
 {   
@@ -13,14 +25,6 @@ function csvRead()
     $items = [];
 
     while (!feof($fp)) {
-        // $line = fgetcsv($fp, 100, ',');
-        // $items[] = array_combine($headers, $line); 
-        // на последней итерации, функиця fgetcvs возвращает false и array_combine выдает ошибку, 
-        // поскольку ждет на вход два массива. очевидно все дело в последнее пустой строке в csv, по логике
-        // fgetcsv на ней должна вернуть масcив [null]
-        // если убрать пустую последнюю строку то все работает, но тогда записть в csv, дописывает линию в конец уже существующей строки
-        // https://github.com/polundra-org/lab-01/blob/main/src/traits/CsvReader.php вот тут аналогичный код. но он работате без этой ошибки, почему?
-
         $items[] = fgetcsv($fp, 100, ',');
     }
     
@@ -29,10 +33,10 @@ function csvRead()
     return $items;
 }
 
-function csvWrite()
-{
+function csvWrite(array $request)
+{   
     $fp = fopen(CSV_PATH, 'a+');
-    fputcsv($fp, $_POST, ',', '"', '', "\n");
+    fputcsv($fp, $request, ',');
     fclose($fp);
 }
 
@@ -52,7 +56,7 @@ function csvEmailExixst($email)
 if (csvEmailExixst($email)) {
     $message = true;
 } else {
-    csvWrite();
+    csvWrite($request);
     $message = false;
 }
 
