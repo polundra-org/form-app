@@ -19,6 +19,24 @@ class Handler
         fputcsv($fp, $request, ',');
         fclose($fp);
     }
+
+    public function emailExist(string $email) : bool
+    {
+        $fp = fopen($this->csvPath, 'r+');
+        $headers = fgetcsv($fp, 100, ',');
+        
+        while (!feof($fp)) {
+            $item = fgetcsv($fp, 100, ',');
+            
+            if ($item[2] === $email) {
+                return true;
+            }
+        }
+
+        fclose($fp);
+               
+        return false;
+    }
 }
 
 if (empty($_POST['first_name']) || empty($_POST['last_name']) || empty($_POST['email'])) {
@@ -35,6 +53,9 @@ $request = [$first_name, $last_name, $email];
 
 $handler = new Handler('../data/requests.csv');
 $handler->wLine($request);
+$out = $handler->emailExist('gesha@gmail.com');
+var_dump($out);
+
 
 // function csvRead()
 // {   
