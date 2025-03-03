@@ -32,10 +32,26 @@ class Handler
                 return true;
             }
         }
-
         fclose($fp);
                
         return false;
+    }
+
+    public function rLine(string $email) : array | null
+    {
+        $fp = fopen($this->csvPath, 'r+');
+        $headers = fgetcsv($fp, 100, ',');
+        
+        while (!feof($fp)) {
+            $item = fgetcsv($fp, 100, ',');
+            
+            if ($item[2] === $email) {
+                return $item;
+            }
+        }
+        fclose($fp);
+
+        return null;
     }
 }
 
@@ -53,7 +69,7 @@ $request = [$first_name, $last_name, $email];
 
 $handler = new Handler('../data/requests.csv');
 $handler->wLine($request);
-$out = $handler->emailExist('gesha@gmail.com');
+$out = $handler->rLine('gesha@rambler.ru');
 var_dump($out);
 
 
