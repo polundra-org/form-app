@@ -1,16 +1,11 @@
 <?php
 
-define('CSV_PATH', '../data/requests.csv');
 define('DEFAULT_FNAME', 'Andrey');
 define('DEFAULT_LNAME', 'Gubin');
 define('DEFAULT_EMAIL', 'girls_like_stars@gmail.com');
 
 class Handler
 {
-    const DEFAULT_FNAME = 'Andrey';
-    const DEFAULT_LNAME = 'Gubin';
-    const DEFAULT_EMAIL = 'girls_like_stars@gmail.com';
-
     public function __construct(public string $csvPath) {}
 
     public function wLine(array $request) : void
