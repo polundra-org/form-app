@@ -53,6 +53,18 @@ class Handler
 
         return null;
     }
+
+    public function addData(array $request) : bool
+    {
+        if ($this->emailExist($request[2])) {
+            $message = false;
+        } else {
+            $this->wLine($request);
+            $message = true;
+        }
+
+        return $message;
+    }
 }
 
 if (empty($_POST['first_name']) || empty($_POST['last_name']) || empty($_POST['email'])) {
@@ -68,51 +80,6 @@ if (empty($_POST['first_name']) || empty($_POST['last_name']) || empty($_POST['e
 $request = [$first_name, $last_name, $email];
 
 $handler = new Handler('../data/requests.csv');
-$handler->wLine($request);
-$out = $handler->rLine('gesha@rambler.ru');
-var_dump($out);
+$message = $handler->addData($request);
 
-
-// function csvRead()
-// {   
-//     $fp = fopen(CSV_PATH, 'r+');
-//     $headers = fgetcsv($fp, 100, ',');
-//     $items = [];
-
-//     while (!feof($fp)) {
-//         $items[] = fgetcsv($fp, 100, ',');
-//     }
-    
-//     fclose($fp);
-    
-//     return $items;
-// }
-
-// function csvWrite(array $request)
-// {   
-//     $fp = fopen(CSV_PATH, 'a+');
-//     fputcsv($fp, $request, ',');
-//     fclose($fp);
-// }
-
-// function csvEmailExixst($email)
-// {
-//     $items = csvRead();
-
-//     foreach ($items as $item) {
-//         if ($item[2] === $email) {
-//             return true;
-//         }
-//     }
-
-//     return false;
-// }
-
-// if (csvEmailExixst($email)) {
-//     $message = true;
-// } else {
-//     csvWrite($request);
-//     $message = false;
-// }
-
-// header("Location: result.php?first_name=$first_name&last_name=$last_name&email=$email&message=$message");
+header("Location: result.php?first_name=$first_name&last_name=$last_name&email=$email&message=$message");
