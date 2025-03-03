@@ -1,43 +1,40 @@
 <?php
 
-// define('CSV_PATH', '../data/requests.csv');
-// define('DEFAULT_FNAME', 'Andrey');
-// define('DEFAULT_LNAME', 'Gubin');
-// define('DEFAULT_EMAIL', 'girls_like_stars@gmail.com');
+define('CSV_PATH', '../data/requests.csv');
+define('DEFAULT_FNAME', 'Andrey');
+define('DEFAULT_LNAME', 'Gubin');
+define('DEFAULT_EMAIL', 'girls_like_stars@gmail.com');
 
 class Handler
 {
-    const CSV_PATH = '../data/requests.csv';
     const DEFAULT_FNAME = 'Andrey';
     const DEFAULT_LNAME = 'Gubin';
     const DEFAULT_EMAIL = 'girls_like_stars@gmail.com';
 
     public function __construct(public string $csvPath) {}
 
-    public function addHeaders() : void
+    public function wLine(array $request) : void
     {   
-        $fp = fopen($this->csvPath, 'w');
-        fputcsv($fp, ['first_name', 'last_name', 'email'], ',');
+        $fp = fopen($this->csvPath, 'a+');
+        fputcsv($fp, $request, ',');
         fclose($fp);
     }
-
 }
 
+if (empty($_POST['first_name']) || empty($_POST['last_name']) || empty($_POST['email'])) {
+    $first_name = DEFAULT_FNAME;
+    $last_name = DEFAULT_LNAME;
+    $email = DEFAULT_EMAIL;
+} else {
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $email = $_POST['email'];
+} 
+
+$request = [$first_name, $last_name, $email];
+
 $handler = new Handler('../data/requests.csv');
-$handler-> addHeaders();
-
-
-// if (empty($_POST['first_name']) || empty($_POST['last_name']) || empty($_POST['email'])) {
-//     $first_name = DEFAULT_FNAME;
-//     $last_name = DEFAULT_LNAME;
-//     $email = DEFAULT_EMAIL;
-// } else {
-//     $first_name = $_POST['first_name'];
-//     $last_name = $_POST['last_name'];
-//     $email = $_POST['email'];
-// } 
-
-// $request = [$first_name, $last_name, $email];
+$handler->wLine($request);
 
 // function csvRead()
 // {   
