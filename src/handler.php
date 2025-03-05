@@ -16,7 +16,8 @@ if (empty($_POST['first_name']) || empty($_POST['last_name']) || empty($_POST['e
     $email = $_POST['email'];
 } 
 
-$user = new User('../data/requests.csv');
+$csvPath = __DIR__ . getenv('CSV_PATH');
+$user = new User($csvPath);
 $message = $user->addUser($first_name, $last_name, $email);
 
 header("Location: result.php?email=$email&message=$message");

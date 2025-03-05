@@ -5,7 +5,8 @@ require_once __DIR__ . '/user.php';
 $email = $_GET['email'];
 $message = $_GET['message'];
 
-$data = new User('../data/requests.csv');
+$csvPath = __DIR__ . getenv('CSV_PATH');
+$data = new User($csvPath);
 $user = $data->readUser($email);
 
 $fullName = $user[0] . ' ' . $user[1];
