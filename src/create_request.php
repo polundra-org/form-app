@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/user.php';
+require_once __DIR__ . '/Requests.php';
 
 define('DEFAULT_FNAME', 'Andrey');
 define('DEFAULT_LNAME', 'Gubin');
@@ -16,11 +16,8 @@ if (empty($_POST['first_name']) || empty($_POST['last_name']) || empty($_POST['e
     $email = $_POST['email'];
 } 
 
-$date = new DateTime('now');
-$lastResponseDate = $date->modify('+2 hours')->format('Y-m-d H:i:s');
-
 $csvPath = getenv('CSV_PATH');
-$user = new User($csvPath);
-$message = $user->addUser($first_name, $last_name, $email);
+$requests = new Requests($csvPath);
+$new = $requests->createOrUpdate($first_name, $last_name, $email, new DateTime());
 
-header("Location: result.php?email=$email&message=$message");
+header("Location: request_info.php?email=$email&new=$new");
