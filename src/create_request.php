@@ -18,6 +18,5 @@ if (empty($_POST['first_name']) || empty($_POST['last_name']) || empty($_POST['e
 
 $csvPath = getenv('CSV_PATH');
 $requests = new Requests($csvPath);
-$new = $requests->createOrUpdate($first_name, $last_name, $email, new DateTime());
 
 header("Location: request_info.php?email=$email");
