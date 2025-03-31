@@ -20,4 +20,4 @@ $csvPath = getenv('CSV_PATH');
 $requests = new Requests($csvPath);
 $new = $requests->createOrUpdate($first_name, $last_name, $email, new DateTime());
 
-header("Location: request_info.php?email=$email&new=$new");
+header("Location: request_info.php?email=$email");
