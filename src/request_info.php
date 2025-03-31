@@ -5,7 +5,7 @@ require_once __DIR__ . '/Requests.php';
 define('OK_LOGO', '../img/ok_logo.png');
 define('WARNING_LOGO','../img/warning_logo.png');
 define('EMESSAGE_NO_EMAIL','Bad request. Email not transferred');
-define('EMESSAGE_BAD_EMAIL','Bad request. Such email is not available');
+define('EMESSAGE_BAD_EMAIL','Bad request. User not found');
 
 $csvPath = getenv('CSV_PATH');
 
