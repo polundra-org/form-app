@@ -1,11 +1,4 @@
 <?php
-
-// составлять сообщение на странице статуса в зависимости от количества повторньіх отправок
-// если за последние 15 минут форма уже бьіла отправлена то написать одно сообщение
-// если форма бьіла отправлена > 5 раз написать другое сообщение
-// если форма бьіла отправлена первьій раз написать третье сообщение
-// если форма бьіла отправлена повтороно но не так часто и не недавно то написать четвертое сообщение
-
 require_once __DIR__ . '/Requests.php';
 
 define('OK_LOGO', '../img/ok_logo.png');
@@ -29,7 +22,7 @@ if (!empty($_GET['email'])) {
     if (!empty($req)) {
         $now = new DateTime();
         $lastSend = $req[4];
-        $interval = $now->diff($lastSend);
+        $interval = $lastSend->diff($now);
         
         if ($req[3] > 1) {
             $new = false;
@@ -64,11 +57,11 @@ $fullName = $req[0] . ' ' . $req[1];
                     if ($new) {
                         echo "$fullName, " . MESSAGE_3;
                     } else {
-                        if($interval->format('%a') <= 15) {
+                        if($interval->format('%d') <= 15) {
                             echo "$fullName, " . MESSAGE_1;
                         } elseif ($req[3] >= 5) {
                             echo "$fullName, " . MESSAGE_2;
-                        } elseif ($interval->format('%a') > 15 && $req[3] < 5) {
+                        } elseif ($interval->format('%d') > 15 && $req[3] < 5) {
                             echo "$fullName, " . MESSAGE_4;
                         }
                     }
