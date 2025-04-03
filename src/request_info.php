@@ -29,7 +29,7 @@ if (!empty($_GET['email'])) {
     if (!empty($req)) {
         $now = new DateTime();
         $lastSend = $req[4];
-        $interval = $lastSend->diff($now);
+        $interval = $now->diff($lastSend);
         
         if ($req[3] > 1) {
             $new = false;
@@ -64,11 +64,11 @@ $fullName = $req[0] . ' ' . $req[1];
                     if ($new) {
                         echo "$fullName, " . MESSAGE_3;
                     } else {
-                        if($interval->format('%d') <= 15) {
+                        if($interval->format('%a') <= 15) {
                             echo "$fullName, " . MESSAGE_1;
                         } elseif ($req[3] >= 5) {
                             echo "$fullName, " . MESSAGE_2;
-                        } elseif ($interval->format('%d') > 15 && $req[3] < 5) {
+                        } elseif ($interval->format('%a') > 15 && $req[3] < 5) {
                             echo "$fullName, " . MESSAGE_4;
                         }
                     }
