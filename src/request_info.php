@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/Requests.php';
 
 define('OK_LOGO', '../img/ok_logo.png');
@@ -57,11 +58,11 @@ $fullName = $req[0] . ' ' . $req[1];
                     if ($new) {
                         echo "$fullName, " . MESSAGE_3;
                     } else {
-                        if($interval->format('%d') <= 15) {
+                        if($interval->format('%a') <= 15) {
                             echo "$fullName, " . MESSAGE_1;
                         } elseif ($req[3] >= 5) {
                             echo "$fullName, " . MESSAGE_2;
-                        } elseif ($interval->format('%d') > 15 && $req[3] < 5) {
+                        } elseif ($interval->format('%a') > 15 && $req[3] < 5) {
                             echo "$fullName, " . MESSAGE_4;
                         }
                     }
