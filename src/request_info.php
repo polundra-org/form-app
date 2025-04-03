@@ -25,14 +25,12 @@ if (!empty($_GET['email'])) {
     $email = $_GET['email'];
     $requests = new Requests($csvPath);
     $req = $requests->read($email);
-    
-    $now = new DateTime();
-    $lastSend = $req[4];
-    $interval = $lastSend->diff($now);
-
-    // >format(DateTimeInterface::ISO8601);
-    
+       
     if (!empty($req)) {
+        $now = new DateTime();
+        $lastSend = $req[4];
+        $interval = $lastSend->diff($now);
+        
         if ($req[3] > 1) {
             $new = false;
         } else {
