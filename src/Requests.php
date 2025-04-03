@@ -14,16 +14,12 @@ class Requests
         $tempFileName = tempnam(self::TEMP_DIR, self::TEMP_FILE_PREFIX);
         $fp = fopen($this->csvPath, 'r+');
         $fpTemp = fopen($tempFileName, 'a+');
-        $new = false;
+        $new = true;
 
-        if(filesize($this->csvPath) === 0) {
-            $new = true;
-        } else {
+        if(filesize($this->csvPath) !== 0) {
             while (!feof($fp)) {
                 $line = fgetcsv($fp, null, self::CSV_FIELD_SEPARATOR, self::CSV_FIELD_ENCLOSURE);
-
-                var_dump($line);
-                               
+                                
                 if($line[2] === $email){
                     $line[3] += 1;
                     $line[4] = $lastSend->format(DateTimeInterface::ISO8601);
@@ -32,19 +28,15 @@ class Requests
                 } else {
                     if($line) {
                         fputcsv($fpTemp, $line, self::CSV_FIELD_SEPARATOR, self::CSV_FIELD_ENCLOSURE);
-                        $new = true;
                     }
                 }
             }
-        }
+        }   
 
         if ($new) {
             $newLine = [$firstName, $lastName, $email, 1, $lastSend->format(DateTimeInterface::ISO8601)];
             fputcsv($fpTemp, $newLine, self::CSV_FIELD_SEPARATOR, self::CSV_FIELD_ENCLOSURE);
         }
-
-        // var_dump(ftell($fp));       // 1
-        // var_dump(ftell($fpTemp));  // 68
 
         fclose($fp);
         fclose($fpTemp);
