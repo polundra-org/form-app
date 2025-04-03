@@ -10,24 +10,30 @@ class Requests
     public function __construct(private string $csvPath) {}
 
     public function createOrUpdate(string $firstName, string $lastName, string $email, \DateTime $lastSend) : bool
-    {
+    {   
         $tempFileName = tempnam(self::TEMP_DIR, self::TEMP_FILE_PREFIX);
         $fp = fopen($this->csvPath, 'r+');
         $fpTemp = fopen($tempFileName, 'a+');
         $new = false;
 
-        while (!feof($fp)) {
-            $line = fgetcsv($fp, null, self::CSV_FIELD_SEPARATOR, self::CSV_FIELD_ENCLOSURE);
-                
-            if (is_array($line)) {
+        if(filesize($this->csvPath) === 0) {
+            $new = true;
+        } else {
+            while (!feof($fp)) {
+                $line = fgetcsv($fp, null, self::CSV_FIELD_SEPARATOR, self::CSV_FIELD_ENCLOSURE);
+
+                var_dump($line);
+                               
                 if($line[2] === $email){
                     $line[3] += 1;
                     $line[4] = $lastSend->format(DateTimeInterface::ISO8601);
                     fputcsv($fpTemp, $line, self::CSV_FIELD_SEPARATOR, self::CSV_FIELD_ENCLOSURE);
                     $new = false;
                 } else {
-                    fputcsv($fpTemp, $line, self::CSV_FIELD_SEPARATOR, self::CSV_FIELD_ENCLOSURE);
-                    $new = true;
+                    if($line) {
+                        fputcsv($fpTemp, $line, self::CSV_FIELD_SEPARATOR, self::CSV_FIELD_ENCLOSURE);
+                        $new = true;
+                    }
                 }
             }
         }
@@ -36,6 +42,9 @@ class Requests
             $newLine = [$firstName, $lastName, $email, 1, $lastSend->format(DateTimeInterface::ISO8601)];
             fputcsv($fpTemp, $newLine, self::CSV_FIELD_SEPARATOR, self::CSV_FIELD_ENCLOSURE);
         }
+
+        // var_dump(ftell($fp));       // 1
+        // var_dump(ftell($fpTemp));  // 68
 
         fclose($fp);
         fclose($fpTemp);
