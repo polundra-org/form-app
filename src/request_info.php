@@ -1,11 +1,23 @@
 <?php
 
+// составлять сообщение на странице статуса в зависимости от количества повторньіх отправок
+// если за последние 15 минут форма уже бьіла отправлена то написать одно сообщение
+// если форма бьіла отправлена > 5 раз написать другое сообщение
+// если форма бьіла отправлена первьій раз написать третье сообщение
+// если форма бьіла отправлена повтороно но не так часто и не недавно то написать четвертое сообщение
+
 require_once __DIR__ . '/Requests.php';
 
 define('OK_LOGO', '../img/ok_logo.png');
 define('WARNING_LOGO','../img/warning_logo.png');
+
 define('EMESSAGE_NO_EMAIL','Bad request. Email not transferred');
 define('EMESSAGE_BAD_EMAIL','Bad request. User not found');
+
+define('MESSAGE_1', 'you have already submitted the form within the last 15 minutes');
+define('MESSAGE_2', 'you have already submitted the form more than 5 times');
+define('MESSAGE_3', 'you registered for the first time');
+define('MESSAGE_4', 'you have already submitted the form several times recently');
 
 $csvPath = getenv('CSV_PATH');
 
@@ -13,7 +25,13 @@ if (!empty($_GET['email'])) {
     $email = $_GET['email'];
     $requests = new Requests($csvPath);
     $req = $requests->read($email);
+    
+    $now = new DateTime();
+    $lastSend = $req[4];
+    $interval = $lastSend->diff($now);
 
+    // >format(DateTimeInterface::ISO8601);
+    
     if (!empty($req)) {
         if ($req[3] > 1) {
             $new = false;
@@ -46,9 +64,15 @@ $fullName = $req[0] . ' ' . $req[1];
                     echo $eMessage;
                 } else {
                     if ($new) {
-                        echo "$fullName, Ваши данные сохранены. Запрос на подтверждение отправлен на почту: $email";
+                        echo "$fullName, " . MESSAGE_3;
                     } else {
-                        echo "$fullName, Вы уже зарегестрированы. Ваша почта: $email";
+                        if($interval->format('%d') <= 15) {
+                            echo "$fullName, " . MESSAGE_1;
+                        } elseif ($req[3] >= 5) {
+                            echo "$fullName, " . MESSAGE_2;
+                        } elseif ($interval->format('%d') > 15 && $req[3] < 5) {
+                            echo "$fullName, " . MESSAGE_4;
+                        }
                     }
                 }
                 ?>
