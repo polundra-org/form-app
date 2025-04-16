@@ -65,9 +65,34 @@ class Requests
     public function import() : array | null
     {
         require_once $this->csvPath;
-        
+
+        $sortedData = [];
+        $importLog = [
+            "success" => 0,
+            "duplicate" => 0,
+            "errors" => 0,
+            "total" => 0
+        ];
+
+        if (empty(DATA)) {
+            echo 'No data for import';
+        }
+
+        foreach (DATA as $item) {
+            if (empty($item['first_name']) || empty($item['last_name']) || empty($item['email'])) {
+                $importLog['errors'] += 1;
+            } else {
+                $sortedData[] = $item;
+            }
+        }
+
         echo '<pre>';
-        print_r(DATA);
+        print_r($sortedData);
         echo '</pre>';
+
+        echo '<pre>';
+        print_r($importLog);
+        echo '</pre>';
+
     }
 }
