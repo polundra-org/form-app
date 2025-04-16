@@ -61,4 +61,13 @@ class Requests
 
         return null;
     }
+
+    public function import() : array | null
+    {
+        require_once $this->csvPath;
+        
+        echo '<pre>';
+        print_r(DATA);
+        echo '</pre>';
+    }
 }
