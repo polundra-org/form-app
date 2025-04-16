@@ -62,7 +62,7 @@ class Requests
         return null;
     }
 
-    public function import() : array | null
+    public function filterImportData() : array | null
     {
         require_once $this->csvPath;
 
@@ -112,6 +112,6 @@ class Requests
         print_r($result);
         echo '</pre>';
 
-        return $filterLog;
+        return [$filterLog, $result];
     }
 }

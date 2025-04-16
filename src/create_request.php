@@ -22,6 +22,6 @@ if (empty($_POST['first_name']) || empty($_POST['last_name']) || empty($_POST['e
 
 $importPath = getenv('IMPORT_PATH');
 $requests = new Requests($importPath);
-$requests->import();
+$requests->filterImportData();
 
 //header("Location: request_info.php?email=$email");
