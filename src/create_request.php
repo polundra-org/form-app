@@ -23,6 +23,16 @@ $requests->createOrUpdate($first_name, $last_name, $email, new DateTime());
 
 $importPath = getenv('IMPORT_PATH');
 $import = new Import($importPath);
-$import->filterImportData();
+$success = $import->filterImportData()[0]['success'];
 
-//header("Location: request_info.php?email=$email");
+for ($i = 0; $i <= $success - 1; $i++) {
+    $importLIne = $import->getLine($i);
+
+    $first_name = $importLIne['first_name'];
+    $last_name = $importLIne['last_name'];
+    $email = $importLIne['email'];
+    
+    $requests->createOrUpdate($first_name, $last_name, $email, new DateTime());
+}
+
+header("Location: request_info.php?email=$email");

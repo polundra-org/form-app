@@ -44,21 +44,13 @@ class Import
             if (array_key_exists($key, $noErrorsData)) {
                 $result[] = $noErrorsData[$key];
             }
-        }   
-
-        echo '<pre>';
-        print_r($filterLog);
-        echo '</pre>';
-
-        echo '<pre>';
-        print_r($result);
-        echo '</pre>';
+        }
 
         return [$filterLog, $result];
     }
 
-    // public function import() : bool
-    // {
-    //     filterImportData()
-    // }
+    public function getLine(int $i) : array
+    {
+       return $this->filterImportData()[1][$i];
+    }
 }
