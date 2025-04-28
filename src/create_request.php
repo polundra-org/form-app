@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/Requests.php';
+require_once __DIR__ . '/Import.php';
 
 define('DEFAULT_FNAME', 'Andrey');
 define('DEFAULT_LNAME', 'Gubin');
@@ -19,5 +20,19 @@ if (empty($_POST['first_name']) || empty($_POST['last_name']) || empty($_POST['e
 $csvPath = getenv('CSV_PATH');
 $requests = new Requests($csvPath);
 $requests->createOrUpdate($first_name, $last_name, $email, new DateTime());
+
+$importPath = getenv('IMPORT_PATH');
+$import = new Import($importPath);
+$success = $import->filterImportData()[0]['success'];
+
+for ($i = 0; $i <= $success - 1; $i++) {
+    $importLIne = $import->getLine($i);
+
+    $first_name = $importLIne['first_name'];
+    $last_name = $importLIne['last_name'];
+    $email = $importLIne['email'];
+    
+    $requests->createOrUpdate($first_name, $last_name, $email, new DateTime());
+}
 
 header("Location: request_info.php?email=$email");
